@@ -1,0 +1,29 @@
+package org.example.observer.observer;
+
+import org.example.observer.subject.WeatherData;
+
+public class MobileDisplay implements Observer, Display{
+    WeatherData weatherData;
+
+    int temp;
+    int humidity;
+    int pressure;
+
+    public MobileDisplay(WeatherData weatherData){
+        this.weatherData = weatherData;
+    }
+
+    @Override
+    public void update() {
+        this.humidity = weatherData.getHumidity();
+        this.temp = weatherData.getTemp();
+        this.pressure = weatherData.getPressure();
+        display();
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Mobile Display");
+        System.out.println(temp+" "+humidity+" "+pressure);
+    }
+}

@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.observer.observer.MobileDisplay;
+import org.example.observer.observer.WebDisplay;
+import org.example.observer.subject.WeatherData;
 import org.example.strategy.behaviour.FlyWithFuel;
 import org.example.strategy.behaviour.FlyWithWings;
 import org.example.strategy.behaviour.Quack;
@@ -14,6 +17,25 @@ public class Main {
     public static void main(String[] args) {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
+
+        strategy();
+        observer();
+    }
+
+    private static void observer() {
+        System.out.println("**********Observer Pattern**********");
+        WeatherData weatherData = new WeatherData();
+        MobileDisplay mobileDisplay = new MobileDisplay(weatherData);
+        WebDisplay webDisplay = new WebDisplay(weatherData);
+        weatherData.registerObserver(mobileDisplay);
+        weatherData.registerObserver(webDisplay);
+        weatherData.setData(10,20,30);
+        weatherData.removeObserver(mobileDisplay);
+        weatherData.setData(40,50,60);
+    }
+
+    private static void strategy() {
+        System.out.println("**********Strategy Pattern**********");
         Duck redHead = new RedHeadDuck();
         redHead.displayDuck();
         redHead.setFlyBehaviour(new FlyWithWings());
