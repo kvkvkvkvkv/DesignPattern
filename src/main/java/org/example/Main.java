@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.decorator.beverage.Beverage;
+import org.example.decorator.beverage.Tea;
+import org.example.decorator.condiments.Matcha;
+import org.example.decorator.condiments.Whip;
 import org.example.observer.observer.MobileDisplay;
 import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
@@ -20,6 +24,15 @@ public class Main {
 
         strategy();
         observer();
+        decorator();
+    }
+
+    private static void decorator() {
+        System.out.println("**********Decorator Pattern**********");
+        Beverage beverage = new Tea();
+        beverage = new Matcha(beverage);
+        beverage = new Whip(beverage);
+        System.out.println(beverage.cost());
     }
 
     private static void observer() {
