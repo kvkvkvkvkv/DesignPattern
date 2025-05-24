@@ -4,6 +4,9 @@ import org.example.decorator.beverage.Beverage;
 import org.example.decorator.beverage.Tea;
 import org.example.decorator.condiments.Matcha;
 import org.example.decorator.condiments.Whip;
+import org.example.factory.abstractfactory.storefactory.NYPizzaStoreFactory;
+import org.example.factory.simplefactory.PizzaFactory;
+import org.example.factory.simplefactory.PizzaStore;
 import org.example.observer.observer.MobileDisplay;
 import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
@@ -25,6 +28,20 @@ public class Main {
         strategy();
         observer();
         decorator();
+        simpleFactory();
+        abstractFactory();
+    }
+
+    private static void abstractFactory() {
+        System.out.println("**********Abstract Factory Pattern**********");
+        org.example.factory.abstractfactory.storefactory.PizzaStore pizzaStore = new NYPizzaStoreFactory();
+        pizzaStore.orderPIzza("cheese");
+    }
+
+    private static void simpleFactory() {
+        System.out.println("**********Simple Factory Pattern**********");
+        PizzaStore pizzaStore = new PizzaStore(new PizzaFactory());
+        pizzaStore.orderPizza("cheese");
     }
 
     private static void decorator() {
