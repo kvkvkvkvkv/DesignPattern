@@ -1,8 +1,6 @@
-package org.example.factory.abstractfactory.storefactory;
+package org.example.factory.factory.storefactory;
 
-
-import org.example.factory.abstractfactory.IngredientFactory;
-import org.example.factory.abstractfactory.model.pizza.Pizza;
+import org.example.factory.simplefactory.model.Pizza;
 
 /*
 * Defines interface for creating obj, subclasses decided what to instantiate
@@ -12,15 +10,8 @@ import org.example.factory.abstractfactory.model.pizza.Pizza;
 * */
 public abstract class PizzaStore {
 
-    IngredientFactory ingredientFactory;
-
-    public PizzaStore(IngredientFactory ingredientFactory) {
-        this.ingredientFactory = ingredientFactory;
-    }
     public Pizza orderPIzza(String name){
-        Pizza pizza = createPizza(name);
-        pizza.prepare();
-        return pizza;
+        return createPizza(name);
     }
 
     //factory method

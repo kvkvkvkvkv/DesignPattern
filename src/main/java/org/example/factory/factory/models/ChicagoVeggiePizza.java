@@ -1,8 +1,6 @@
-package org.example.factory.abstractfactory.models;
+package org.example.factory.factory.models;
 
 import org.example.factory.simplefactory.model.Pizza;
-
-import javax.xml.namespace.QName;
 
 public class ChicagoVeggiePizza extends Pizza {
     public ChicagoVeggiePizza(String name) {

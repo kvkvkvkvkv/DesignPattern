@@ -4,7 +4,9 @@ import org.example.decorator.beverage.Beverage;
 import org.example.decorator.beverage.Tea;
 import org.example.decorator.condiments.Matcha;
 import org.example.decorator.condiments.Whip;
-import org.example.factory.abstractfactory.storefactory.NYPizzaStoreFactory;
+import org.example.factory.abstractfactory.IngredientFactory;
+import org.example.factory.abstractfactory.NYIngredientFactory;
+import org.example.factory.factory.storefactory.NYPizzaStoreFactory;
 import org.example.factory.simplefactory.PizzaFactory;
 import org.example.factory.simplefactory.PizzaStore;
 import org.example.observer.observer.MobileDisplay;
@@ -28,13 +30,25 @@ public class Main {
         strategy();
         observer();
         decorator();
+        System.out.println("Whole point of factory is to use subclasses for obj creation " +
+                "\n clients are decoupled from concrete classes");
         simpleFactory();
+        factory();
         abstractFactory();
     }
 
     private static void abstractFactory() {
         System.out.println("**********Abstract Factory Pattern**********");
-        org.example.factory.abstractfactory.storefactory.PizzaStore pizzaStore = new NYPizzaStoreFactory();
+        System.out.println("Uses composition where as factory will use inheritance");
+        org.example.factory.abstractfactory.storefactory.PizzaStore pizzaStore = new
+                org.example.factory.abstractfactory.storefactory.NYPizzaStoreFactory(new NYIngredientFactory());
+        pizzaStore.orderPIzza("cheese");
+    }
+
+    private static void factory() {
+        System.out.println("**********Factory Pattern**********");
+        System.out.println("Used for single product, creator needs single product");
+        org.example.factory.factory.storefactory.PizzaStore pizzaStore = new NYPizzaStoreFactory();
         pizzaStore.orderPIzza("cheese");
     }
 
