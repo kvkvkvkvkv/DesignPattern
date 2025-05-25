@@ -4,14 +4,17 @@ import org.example.decorator.beverage.Beverage;
 import org.example.decorator.beverage.Tea;
 import org.example.decorator.condiments.Matcha;
 import org.example.decorator.condiments.Whip;
-import org.example.factory.abstractfactory.IngredientFactory;
 import org.example.factory.abstractfactory.NYIngredientFactory;
 import org.example.factory.factory.storefactory.NYPizzaStoreFactory;
 import org.example.factory.simplefactory.PizzaFactory;
 import org.example.factory.simplefactory.PizzaStore;
+import org.example.factory.gpt.factory.AndroidFactory;
+import org.example.factory.gpt.factory.UIClient;
 import org.example.observer.observer.MobileDisplay;
 import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
+import org.example.singleton.ConfigManagerEagerLoading;
+import org.example.singleton.ConfigManagerLazyLoading;
 import org.example.strategy.behaviour.FlyWithFuel;
 import org.example.strategy.behaviour.FlyWithWings;
 import org.example.strategy.behaviour.Quack;
@@ -35,6 +38,24 @@ public class Main {
         simpleFactory();
         factory();
         abstractFactory();
+        gpt();
+        singleton();
+
+    }
+
+    private static void singleton() {
+        System.out.println("**********Singleton **********");
+        ConfigManagerEagerLoading configManagerEagerLoading = ConfigManagerEagerLoading.getInstance();
+        configManagerEagerLoading.loadConfig();
+
+        ConfigManagerLazyLoading configManagerLazyLoading = ConfigManagerLazyLoading.getInstance();
+        configManagerLazyLoading.loadConfig();
+    }
+
+    private static void gpt() {
+        System.out.println("**********Abstract Factory Pattern GPT **********");
+        UIClient uiClient = new UIClient(new AndroidFactory());
+        uiClient.createUI();
     }
 
     private static void abstractFactory() {
