@@ -2,7 +2,14 @@ package org.example.singleton;
 
 public class ConfigManagerThreadMethodSync {
 
-    private static ConfigManagerThreadMethodSync instance = null;
+    //use volatile keyword
+    //any write by one thread is visible to all thread
+    //JVM reorders instructions - allocate memory, assign reference to instance, call contructor
+    // If reorderred then we another thread might see instance!=null beofre on thread completes above instructions
+    // volatile presenebt instruction reordering and visible to all threads
+    // constructior is fully finished before all threads
+    // use volatile for state sharing, avioid loc overhead like sync
+    private static volatile ConfigManagerThreadMethodSync instance = null;
 
     private ConfigManagerThreadMethodSync() {
     }
