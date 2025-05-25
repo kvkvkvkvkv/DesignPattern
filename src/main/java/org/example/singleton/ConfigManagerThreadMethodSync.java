@@ -11,7 +11,17 @@ public class ConfigManagerThreadMethodSync {
     // use volatile for state sharing, avioid loc overhead like sync
     private static volatile ConfigManagerThreadMethodSync instance = null;
 
+    //reflection can break private
+    //block reflection with null check
+//    Constructor<ConfigManagerThreadMethodSync> constructor = ConfigManagerThreadMethodSync.class.getDeclaredConstructor();
+//    constructor.setAccessible(true);
+//    ConfigManagerThreadMethodSync hacked = constructor.newInstance();
+    // ConfigManagerThreadMethodSync.getInstance(); will not be called directly new ConfigManagerThreadMethodSync() calls
     private ConfigManagerThreadMethodSync() {
+        if (instance != null) {
+            //throw error so reflection can't create new instance
+            throw new RuntimeException("Use getInstance() method");
+        }
     }
 
     //better as sync will be used only if not null
@@ -45,5 +55,36 @@ public class ConfigManagerThreadMethodSync {
 
     public void loadConfig() {
         System.out.println("ConfigManagerThreadMethodSync");
+    }
+
+/*
+* serialization + deserialised causes singleton to break
+* as bytestream creates a new object
+* write read resove to sove this
+* ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("config.ser"));
+oos.writeObject(ConfigManagerThreadMethodSync.getInstance());
+oos.close();
+
+ObjectInputStream ois = new ObjectInputStream(new FileInputStream("config.ser"));
+ConfigManagerThreadMethodSync deserialized = (ConfigManagerThreadMethodSync) ois.readObject();
+
+*
+* ConfigManagerThreadMethodSync original = ConfigManagerThreadMethodSync.getInstance();
+System.out.println(original == deserialized); // ❌ false
+return existing obj than newly created obj
+* */
+    protected Object readResolve() {
+        return instance;
+    }
+
+    /*
+    ConfigManagerThreadMethodSync s1 = ConfigManagerThreadMethodSync.getInstance();
+    ConfigManagerThreadMethodSync s2 = (ConfigManagerThreadMethodSync) s1.clone();
+    can break with this if impl Clomeable
+    creates low level copy of instance without constructor, even if it's private
+    */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
     }
 }
