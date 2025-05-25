@@ -13,10 +13,7 @@ import org.example.factory.gpt.factory.UIClient;
 import org.example.observer.observer.MobileDisplay;
 import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
-import org.example.singleton.ConfigManagerEagerLoading;
-import org.example.singleton.ConfigManagerLazyLoading;
-import org.example.singleton.ConfigManagerThreadMethodSync;
-import org.example.singleton.ConfigManagerThreadSynchronized;
+import org.example.singleton.*;
 import org.example.strategy.behaviour.FlyWithFuel;
 import org.example.strategy.behaviour.FlyWithWings;
 import org.example.strategy.behaviour.Quack;
@@ -78,7 +75,14 @@ public class Main {
         //one time acquiring sync other time provinding created instance
         syncSingleInstanceWait();
 
+        enumSingleton();
 
+
+    }
+
+    private static void enumSingleton() {
+        ConfigManagerEnum configManagerEnum = ConfigManagerEnum.INSTANCE;
+        configManagerEnum.loadConfig();
     }
 
     private static void syncSingleInstanceWait() {
