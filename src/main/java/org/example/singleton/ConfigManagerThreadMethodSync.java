@@ -87,4 +87,23 @@ return existing obj than newly created obj
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
+
+    /*
+    * Class loader issue - each class loader creates a new byte code of the .java class
+    * So we can end up with different instance per class loaded
+    * ClassLoader loader1 = new CustomClassLoader();
+ClassLoader loader2 = new CustomClassLoader();
+
+Class<?> class1 = loader1.loadClass("ConfigManagerThreadMethodSync");
+Class<?> class2 = loader2.loadClass("ConfigManagerThreadMethodSync");
+
+Object obj1 = class1.getMethod("getInstance").invoke(null);
+Object obj2 = class2.getMethod("getInstance").invoke(null);
+
+System.out.println(obj1 == obj2); // ❌ false — two Singletons!
+
+* each class has it's own static variables so instane gets created twice
+* use shared class loader loaded by parent, bootstrap class loader or system classloader
+*
+    * */
 }
