@@ -15,6 +15,8 @@ import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
 import org.example.singleton.ConfigManagerEagerLoading;
 import org.example.singleton.ConfigManagerLazyLoading;
+import org.example.singleton.ConfigManagerThreadMethodSync;
+import org.example.singleton.ConfigManagerThreadSynchronized;
 import org.example.strategy.behaviour.FlyWithFuel;
 import org.example.strategy.behaviour.FlyWithWings;
 import org.example.strategy.behaviour.Quack;
@@ -43,13 +45,102 @@ public class Main {
 
     }
 
+
+    /*
+    * Config loaded Eager
+    Config loaded Lazy
+    Config loaded Lazy
+    t2 hashcode
+    1527253268
+    t1 hashcode
+    1406503487
+    Config loaded Lazy
+    Config loaded Lazy
+    Thread-0
+    1794529661
+    Config loaded Lazy Thread
+    Thread-1
+    1794529661
+    Config loaded Lazy Thread
+    * */
+
     private static void singleton() {
         System.out.println("**********Singleton **********");
         ConfigManagerEagerLoading configManagerEagerLoading = ConfigManagerEagerLoading.getInstance();
         configManagerEagerLoading.loadConfig();
 
-        ConfigManagerLazyLoading configManagerLazyLoading = ConfigManagerLazyLoading.getInstance();
-        configManagerLazyLoading.loadConfig();
+        //happy case only single thread
+        lazyThreadErrorCase();
+        //Entire method sync to solve thread problme above for lazy
+        //expensive as each time it will acq lock, when it is required only first time
+        syncMethod();
+
+        //one time acquiring sync other time provinding created instance
+        syncSingleInstanceWait();
+
+
+    }
+
+    private static void syncSingleInstanceWait() {
+        Runnable task = () -> {
+            ConfigManagerThreadMethodSync configManagerThreadMethodSync = ConfigManagerThreadMethodSync.getInstance();
+            configManagerThreadMethodSync.loadConfig();
+            System.out.println(Thread.currentThread().getName() +" hashcode "
+                    + System.identityHashCode(configManagerThreadMethodSync));
+        };
+
+        Thread t1 = new Thread(task, "t1 class sync");
+        Thread t2 = new Thread(task, "t2 class sync");
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void syncMethod() {
+        Runnable task = () -> {
+            ConfigManagerThreadSynchronized configManagerThreadSynchronized = ConfigManagerThreadSynchronized.getInstance();
+            configManagerThreadSynchronized.loadConfig();
+            System.out.println(Thread.currentThread().getName() +" Hashcode " +configManagerThreadSynchronized.hashCode());
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void lazyThreadErrorCase() {
+        Runnable t = () -> {
+            ConfigManagerLazyLoading configManagerLazyLoading = ConfigManagerLazyLoading.getInstance();
+            configManagerLazyLoading.loadConfig();
+            System.out.println(Thread.currentThread().getName() +" hashcode "
+                    + System.identityHashCode(configManagerLazyLoading));
+        };
+
+        Thread t1 = new Thread(t, "t1");
+        Thread t2 = new Thread(t, "t2");
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void gpt() {

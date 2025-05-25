@@ -12,6 +12,6 @@ public class ConfigManagerEagerLoading {
     }
 
     public void loadConfig() {
-        System.out.println("Config loaded Eager");
+        System.out.println("ConfigManagerEagerLoading");
     }
 }
