@@ -4,6 +4,13 @@ public class Logger {
 
     private static volatile Logger instance = null;
 
+    private enum LogLevel{
+        INFO,
+        WARN,
+        DEBUG,
+        ERROR
+    }
+
     private Logger() {
         if (instance != null) {
             throw new RuntimeException("Use getInstance() method");
@@ -21,8 +28,24 @@ public class Logger {
         return instance;
     }
 
-    public void log(String message, String level) {
-        System.out.println(level+" "+message);
+    private void log(String message, LogLevel logLevel) {
+        System.out.println(logLevel.name()+" "+message);
+    }
+
+    public void info(String message) {
+        log(message, LogLevel.INFO);
+    }
+
+    public void debug(String message) {
+        log(message, LogLevel.DEBUG);
+    }
+
+    public void warn(String message) {
+        log(message, LogLevel.WARN);
+    }
+
+    public void error(String message) {
+        log(message, LogLevel.ERROR);
     }
 
     @Override

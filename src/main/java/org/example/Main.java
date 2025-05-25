@@ -63,7 +63,10 @@ public class Main {
     private static void gptLoggerSingleton() {
         System.out.println("**********Singleton Logger GPT**********");
         Logger logger = Logger.getInstance();
-        logger.log("HI","INFO");
+        logger.info("Hi");
+        logger.warn("Warn");
+        logger.debug("debug");
+        logger.error("error");
     }
 
 
