@@ -13,7 +13,8 @@ import org.example.factory.gpt.factory.UIClient;
 import org.example.observer.observer.MobileDisplay;
 import org.example.observer.observer.WebDisplay;
 import org.example.observer.subject.WeatherData;
-import org.example.singleton.*;
+import org.example.singleton.configmanager.*;
+import org.example.singleton.logger.Logger;
 import org.example.strategy.behaviour.FlyWithFuel;
 import org.example.strategy.behaviour.FlyWithWings;
 import org.example.strategy.behaviour.Quack;
@@ -29,17 +30,40 @@ public class Main {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
 
+        System.out.println();
         strategy();
+
+        System.out.println();
         observer();
+
+        System.out.println();
         decorator();
+
+        System.out.println();
         System.out.println("Whole point of factory is to use subclasses for obj creation " +
                 "\n clients are decoupled from concrete classes");
         simpleFactory();
+
+        System.out.println();
         factory();
+
+        System.out.println();
         abstractFactory();
-        gpt();
+
+        System.out.println();
+        gptUIFactory();
+
+        System.out.println();
         singleton();
 
+        System.out.println();
+        gptLoggerSingleton();
+    }
+
+    private static void gptLoggerSingleton() {
+        System.out.println("**********Singleton Logger GPT**********");
+        Logger logger = Logger.getInstance();
+        logger.log("HI","INFO");
     }
 
 
@@ -147,7 +171,7 @@ public class Main {
         }
     }
 
-    private static void gpt() {
+    private static void gptUIFactory() {
         System.out.println("**********Abstract Factory Pattern GPT **********");
         UIClient uiClient = new UIClient(new AndroidFactory());
         uiClient.createUI();

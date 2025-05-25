@@ -1,4 +1,4 @@
-package org.example.singleton;
+package org.example.singleton.configmanager;
 
 public class ConfigManagerThreadSynchronized {
 
